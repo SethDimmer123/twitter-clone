@@ -12,11 +12,13 @@ import {
     
     export default function Sidebar() {
         return <>
-        <div className="hidden sm:flex flex-col fixed">{/**sidebar will not move when i scroll */}
+        <div className=" h-full hidden sm:flex flex-col fixed xl:ml-24">{/**sidebar will not move when i scroll */}
+        {/* h-full helps me make sidebar take up 100% of the height of the page puts the user at bottom of page */}
             {/**by default sidebar is hidden */}
             {/* when the screen reaches the min width of 640px the sidebar appears  */}
     
-            <nav className="xl:space-y-1.5">
+            <nav className="h-full relative xl:space-y-1.5">
+                {/* h-full means making the height 100% of the div on line 15 */}
             <div className="flex justify-center xl:justify-start items-center py-3 xl:p-3">
                 {/* the padding disappeared when transfer to smaller screen
                 thats why i added py-3 since i am STARTING FROM SMALLER SCREEN */}
@@ -34,7 +36,12 @@ import {
                 <SidebarLink Icon={BookmarkIcon} text={"Bookmarks"}/>
                 <SidebarLink Icon={UserIcon} text={"Profile"}/>
                 <SidebarLink Icon={DotsCircleHorizontalIcon} text={"More"}/>
-            <div>User</div>
+                <button className=" hidden xl:inline bg-[#1d9bf0] 
+                rounded-full h-[52px] mt-2 w-[200px] text-lg font-bold">
+                    {/* in large breakpoint i see the button */}
+                    Tweet
+                </button>
+            <div className="absolute bottom-0">User</div>
             </nav>
         </div>
         </>
