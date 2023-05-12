@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import Sidebar from '@/components/Sidebar'
+import PostFeed from '@/components/Postfeed'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,7 +15,7 @@ export default function Home() {
       {/* min-h-screen lets me have my entire background be black  */}
       {/* if i increase the size of screen to 1440px  */}
     <Sidebar/>
-    {/* <PostsFeed/> */}
+    <PostFeed/>
     {/* <Trending/> */}
     </div>
   )
