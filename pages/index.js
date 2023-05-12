@@ -4,19 +4,24 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import Sidebar from '@/components/Sidebar'
 import PostFeed from '@/components/Postfeed'
+import Trending from '@/components/Trending'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
-  return (
+export default function Home() { {
+/* this div below is the parent of my components 
+that is why display flex works  */}
+  return (  
     <div className="bg-black min-h-screen text-[#E7E9EA]
-    max-w-[1400px] mx-auto">
+    max-w-[1400px] mx-auto flex">
       {/* mx-auto centers my bg-black also ml-auto mr-auto */}
       {/* min-h-screen lets me have my entire background be black  */}
       {/* if i increase the size of screen to 1440px  */}
+      {/* (39:32) the sidebar is not affected by flex because the sidebar has a position
+      of fixed if i have a position of fixed the component doesnt get affected by flex */}
     <Sidebar/>
     <PostFeed/>
-    {/* <Trending/> */}
+    <Trending/>
     </div>
   )
 }
