@@ -1,8 +1,8 @@
 import { closeSignupModal, openSignupModal } from "@/redux/modalSlice";
 import Modal from "@mui/material/Modal"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
 
 export default function SignupModal() {
@@ -24,6 +24,26 @@ export default function SignupModal() {
             password
         )
     }
+
+    useEffect(() => {
+        //listener checks of user is logged in or logged out if the user just created an 
+        // account i want to log them in not log in again using the same email and password.
+        // They should already be logged in.
+        //onAuthStateChanged function has 2 parameters first one is auth 2nd arguement is a 
+        // callback function in the function i accept an arguement called currentUser
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+            if(!currentUser) return//if currentUser does not exist then return
+            // if i do have a current user i want to take all the information 
+            // displayed in the console and put it in a redux slice so i can access
+            // the information anywhere.
+            console.log(currentUser);
+            // handle redux actions
+        })
+
+        return unsubscribe// i am returning this because it turns off the
+        // listener so i don't have the listener on at all times.
+        // if i have my listener on at all times i will have website issues.
+    }, [])
     return (
         <>
             <button
