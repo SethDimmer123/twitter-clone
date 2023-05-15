@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/firebase";
+import { setUser } from "@/redux/userSlice";
 
 export default function SignupModal() {
 
@@ -38,11 +39,37 @@ export default function SignupModal() {
             // the information anywhere.
             console.log(currentUser);
             // handle redux actions
+
+            // if the user does sign in i get the current user 
+            // if i get the currentUser i want to call the setUser action
+            // once that happens i get the currentUser 
+            // and dispatch and pass in the setUser action
+            // import the setUser from the userSlice.js
+            // in the setUser action is pass in the object
+
+            dispatch(setUser(//setUser action
+            // the username will be currentUser.displayName but since
+            // i am using an email and password the displayName property will
+            // always be null.
+            // i create a different username by getting the email and split
+            // it at the @ and add an @ infront of the first @
+            // with the first element from the array
+                {
+                    username:currentUser.email.split("@")[0],
+                    name:null,//i am not using google sign in just email and password
+                    // that is why i do not have a displayName available.
+                    email:currentUser.email,
+                    uid:currentUser.uid,
+                    photoUrl:null,
+                    // photoUrl will always be null in console.
+                }
+            ))
         })
 
         return unsubscribe// i am returning this because it turns off the
         // listener so i don't have the listener on at all times.
         // if i have my listener on at all times i will have website issues.
+        // now i create my userSlice in redux
     }, [])
     return (
         <>

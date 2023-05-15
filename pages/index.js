@@ -6,10 +6,14 @@ import Sidebar from '@/components/Sidebar'
 import PostFeed from '@/components/Postfeed'
 import Trending from '@/components/Trending'
 import Bottombanner from '@/components/BottomBanner'
+import { useSelector } from 'react-redux'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const username = useSelector(state => state.user.username)
+  console.log(username)
   {
 /* this div below is the parent of my components 
 that is why display flex works  */}
@@ -28,7 +32,9 @@ that is why display flex works  */}
         <Trending />
       </div>
 
-      <Bottombanner />
+      {!username && <Bottombanner />}
+      {/* i only want to display this banner if the username is null */}
+      {/* if the username does not exist only then do i want to show the bottom banner to show */}
     </div>
   )
 }
