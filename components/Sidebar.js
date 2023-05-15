@@ -1,3 +1,5 @@
+import { auth } from "@/firebase"
+import { signOutUser } from "@/redux/userSlice"
 import {
     HomeIcon,
     HashtagIcon,
@@ -9,9 +11,23 @@ import {
     DotsCircleHorizontalIcon,
     DotsHorizontalIcon
 } from "@heroicons/react/outline"
+import { signOut } from "firebase/auth"
 import Image from "next/image"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function Sidebar() {
+
+    const dispatch = useDispatch()
+
+    const user = useSelector(state => state.user)// this makes the username dynamic
+
+    async function handleSignOut() {
+        await signOut(auth)
+        dispatch(signOutUser())
+    }
+
+
+
     return <>
         <div className=" h-full hidden sm:flex flex-col fixed xl:ml-24">{/**sidebar will not move when i scroll */}
             {/* h-full helps me make sidebar take up 100% of the height of the page puts the user at bottom of page */}
@@ -42,16 +58,19 @@ export default function Sidebar() {
                     {/* in large breakpoint i see the button */}
                     Tweet
                 </button>
-                <div className="
+                <div
+                
+                onClick={handleSignOut}
+                className="
                 bottom-0
                 hover:bg-white hover:bg-opacity-10 rounded-full cursor-pointer
                 absolute xl:p-3 flex justify-center items-center space-x-3">
-                    <img className="w-10 h-10 rounded-full object-cover" src="/assets/pfp.png" />
+                    <img className="w-10 h-10 rounded-full object-cover" src={user.photoUrl|| "/assets/kylie.png"} />
                     <div className="hidden xl:inline">
-                        <h1 className="font-bold whitespace-nowrap">name</h1>
+                        <h1 className="font-bold whitespace-nowrap">{user.name}</h1>
                         {/* if the name is too big the name 
                         will not start a new line just take up the whole space. */}
-                        <h1 className="text-gray-500">@username</h1>
+                        <h1 className="text-gray-500">@{user.username}</h1>
                     </div>
                     <DotsHorizontalIcon className="h-5 hidden xl:inline" />
                 </div>

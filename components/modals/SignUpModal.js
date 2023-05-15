@@ -2,9 +2,14 @@ import { closeSignupModal, openSignupModal } from "@/redux/modalSlice";
 import Modal from "@mui/material/Modal"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { auth } from "@/firebase";
 import { setUser } from "@/redux/userSlice";
+import { useRouter } from "next/router";
+
+// to fix the updateProfile function refresh problem i need to implement Router
+// so the profile picture and the username and name is changed
+// and the refreshing of the page is automatic.
 
 export default function SignupModal() {
 
@@ -16,6 +21,10 @@ export default function SignupModal() {
 
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
+    const [name,setName] = useState("");
+
+    const router = useRouter()
+    
 
 
     async function handleSignUp(){
@@ -23,7 +32,24 @@ export default function SignupModal() {
             auth,
             email,
             password
-        )
+        );
+
+        // once the user signs Up i call the update profile function.
+        // i pass in 2 arguements to the function
+
+        // the first arguement is the current user 
+        // the second arguement is an 
+        // object with the properties that i want to change.
+        await updateProfile(auth.currentUser, {
+            displayName: name,
+            photoURL: `./assets/profilePictures/pfp${Math.ceil(Math.random() *6)}.png`
+                                // Math.random returns me a number from 0 to 6
+                                // Math.ceil rounds the number up
+        })
+
+        // automatically refreshes page when i create a new account to have new profile pic.
+        router.reload()
+
     }
 
     useEffect(() => {
@@ -56,11 +82,11 @@ export default function SignupModal() {
             // with the first element from the array
                 {
                     username:currentUser.email.split("@")[0],
-                    name:null,//i am not using google sign in just email and password
+                    name:currentUser.displayName,//i am not using google sign in just email and password
                     // that is why i do not have a displayName available.
                     email:currentUser.email,
                     uid:currentUser.uid,
-                    photoUrl:null,
+                    photoUrl:currentUser.photoURL,
                     // photoUrl will always be null in console.
                 }
             ))
@@ -101,7 +127,9 @@ export default function SignupModal() {
                         <input placeholder="Full Name"
                             className="h-10 rounded-md bg-transparent border
                                  border-gray-700 p-6 mt-8"
-                            type={"text"} />
+                            type={"text"} 
+                            onChange={e => setName(e.target.value)}
+                            />
                         <input placeholder="Email"
                             className="h-10 rounded-md bg-transparent border
                                  border-gray-700 p-6 mt-8"  
