@@ -2,6 +2,8 @@ import { closeSignupModal, openSignupModal } from "@/redux/modalSlice";
 import Modal from "@mui/material/Modal"
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase";
 
 export default function SignupModal() {
 
@@ -10,7 +12,18 @@ export default function SignupModal() {
     // i am using the useDipsatch hook to use
     //  the handleClose functions i already made from useStates.
     const dispatch = useDispatch()
-    console.log(isOpen)
+
+    const [email,setEmail] = useState("")
+    const [password,setPassword] = useState("")
+
+
+    async function handleSignUp(){
+        const userCredentials = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        )
+    }
     return (
         <>
             <button
@@ -44,14 +57,19 @@ export default function SignupModal() {
                             type={"text"} />
                         <input placeholder="Email"
                             className="h-10 rounded-md bg-transparent border
-                                 border-gray-700 p-6 mt-8"  type={"email"} />
+                                 border-gray-700 p-6 mt-8"  
+                                 type={"email"}
+                                 onChange={e => setEmail(e.target.value)} />
                         <input placeholder="Password"
                             className="h-10 rounded-md bg-transparent border
-                                 border-gray-700 p-6 mt-8" type={"password"} />
+                                 border-gray-700 p-6 mt-8" 
+                                 type={"password"}
+                                 onChange={e => setPassword(e.target.value)} />
 
                         <button className="bg-white text-black w-full
                                 font-bold text-lg p-2 mt-8 rounded-md
-                                ">Create Account</button>
+                                "
+                                onClick={handleSignUp}>Create Account</button>
                     </div>
                 </div>
 
