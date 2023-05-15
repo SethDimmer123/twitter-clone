@@ -25,7 +25,7 @@ that is why display flex works  */}
         {/* mx-auto centers my bg-black also ml-auto mr-auto */}
         {/* min-h-screen lets me have my entire background be black  */}
         {/* if i increase the size of screen to 1440px  */}
-        {/* (39:32) the sidebar is not affected by flex because the sidebar has a position
+        {/*  the sidebar is not affected by flex because the sidebar has a position
       of fixed if i have a position of fixed the component doesnt get affected by flex */}
         <Sidebar />
         <PostFeed />
