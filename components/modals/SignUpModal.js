@@ -2,7 +2,7 @@ import { closeSignupModal, openSignupModal } from "@/redux/modalSlice";
 import Modal from "@mui/material/Modal"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "@/firebase";
 import { setUser } from "@/redux/userSlice";
 import { useRouter } from "next/router";
@@ -50,6 +50,10 @@ export default function SignupModal() {
         // automatically refreshes page when i create a new account to have new profile pic.
         router.reload()
 
+    }
+
+    async function handleGuestSignIn(email, password) {
+        await signInWithEmailAndPassword(auth, "guest867839302@gmail.com", "batmanseth234")
     }
 
     useEffect(() => {
@@ -121,7 +125,8 @@ export default function SignupModal() {
                     <div className="w-[90%] mt-8 flex flex-col">
                         <button className="bg-white text-black w-full
                                 font-bold text-lg p-2 rounded-md
-                                ">Sign In as guest</button>
+                                "
+                                onClick={handleGuestSignIn}>Sign In as guest</button>
                         <h1 className="text-center mt-4 font-bold text-lg">or</h1>
                         <h1 className=" mt-4 font-bold text-4xl">Create your Account</h1>
                         <input placeholder="Full Name"

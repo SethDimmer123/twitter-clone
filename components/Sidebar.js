@@ -1,4 +1,5 @@
 import { auth } from "@/firebase"
+import { closeLoginModal, closeSignupModal } from "@/redux/modalSlice"
 import { signOutUser } from "@/redux/userSlice"
 import {
     HomeIcon,
@@ -24,6 +25,8 @@ export default function Sidebar() {
     async function handleSignOut() {
         await signOut(auth)
         dispatch(signOutUser())
+        dispatch(closeSignupModal())//gets rid of modal when signing out
+        dispatch(closeLoginModal())
     }
 
 
