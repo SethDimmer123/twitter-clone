@@ -7,13 +7,15 @@ import PostFeed from '@/components/Postfeed'
 import Trending from '@/components/Trending'
 import Bottombanner from '@/components/BottomBanner'
 import { useSelector } from 'react-redux'
+import CommentModal from '@/components/modals/CommentModal'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 
   const username = useSelector(state => state.user.username)
-  console.log(username)
+  // console.log(username)
   {
 /* this div below is the parent of my components 
 that is why display flex works  */}
@@ -31,6 +33,9 @@ that is why display flex works  */}
         <PostFeed />
         <Trending />
       </div>
+
+      {/* calling my CommentModal in modals folder for it to show up */}
+      <CommentModal />
 
       {!username && <Bottombanner />}
       {/* i only want to display this banner if the username is null */}
