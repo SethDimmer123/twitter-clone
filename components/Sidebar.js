@@ -26,7 +26,7 @@ export default function Sidebar() {
         await signOut(auth)
         dispatch(signOutUser())
         dispatch(closeSignupModal())//gets rid of modal when signing out
-        dispatch(closeLoginModal())
+        dispatch(closeLoginModal())// dispatching another action closeLoginModal when i login the sign out there is no modal popping up.
     }
 
 
