@@ -1,7 +1,34 @@
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Tweet from "./Tweet";
 import TweetInput from "./TweetInput";
+import { db } from "@/firebase";
+import { useEffect, useState } from "react";
 
 export default function PostsFeed() {
+
+    const [tweets, setTweets] = useState([])//i have this useState to store my tweets.
+
+    // my tweets is an array full of my docs
+
+    //WORKING ON DISPLAYING MY TWEETS
+    // useEffect and snapShot to get all the posts from my collection.
+
+    useEffect(() => {
+        const q = query(collection(db, "posts"), orderBy("timestamp","desc"))
+        // gets all the posts and order them in descending order.
+        // q is for query
+
+        const unsubscribed = onSnapshot(q, (snapshot) => {
+            //the snapshot has all the documents
+            setTweets(snapshot.docs)
+            //snapshot.docs is an array of all of my docs
+            // i am setting setTweets to be the snapshot.docs array
+        }) 
+
+        return unsubscribed//this is so i do not always have the listener on. 
+    }, [])
+
+
     return (//flex-grow makes sure the feed takes up most of the space
         <div className="sm:ml-16 xl:ml-80 max-w-2xl flex-grow
         border-gray-700 border-x">
@@ -13,6 +40,15 @@ export default function PostsFeed() {
                     Home
                 </div>
                 <TweetInput />
+
+                {/* map the tweets */}
+
+                {tweets.map(tweet => {
+                    return <Tweet key={tweet.id}/>
+                    // i am getting the tweet from the tweets array useState
+                    // i set the Tweets to the snapshot.docs
+                    // my tweets is an array full of docs
+                })}
 
                 <Tweet />
         </div>
