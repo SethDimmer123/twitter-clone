@@ -1,13 +1,67 @@
+import { db } from "@/firebase"
 import { openCommentModal, setCommentTweet } from "@/redux/modalSlice"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
+import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import Moment from "react-moment"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function Tweet({ data, id }) {
 
     const dispatch = useDispatch()
     const router = useRouter()
+    const user  = useSelector(state => state.user)
+
+
+    const [likes,setLikes] = useState([])
+
+    // added liking and getting number of likes in the comments and displaying it 
+    // and unliking it.
+
+    async function likeComment(e) {
+        e.stopPropagation()
+        // checking if uid is in the likes array
+        // .includes function checks if an element is an array or not
+        // i pass in the element user.uid which is a string in this case 
+        // if it is in the array it will return true 
+        // if it isn't it will return false
+        if(likes.includes(user.uid)) {
+            // if i want to unlike (remove my uid from the likes array)
+            await updateDoc(doc(db, "posts", id), {
+                //  i am using the arrayRemove method to 
+                // remove an element from the array.
+                // removing my uid in this case
+                likes: arrayRemove(user.uid)
+
+            })
+        }
+        else {
+            await updateDoc(doc(db, "posts", id), {
+                // 2nd arguement is what i want to update in this case 
+                // i want to update the likes array. 
+                likes:arrayUnion(user.uid)
+                //  i use the arrayUnion method to add likes
+        })
+
+        }
+    }
+
+    // functionaility for unliking a post
+    //check if the uid is in the likes array if it is then i unlike it (in firebase)
+    // if the uid is not in the likes array then i like it
+    // i need to use a useEffect
+    useEffect(() => {
+
+        if (!id) return
+        const unsubscribe = onSnapshot(doc(db,"posts",id),(doc) =>{
+            setLikes(doc.data().likes)
+        });
+
+        return unsubscribe
+    }, [])
+
+
     return (
         <div className="border-b border-gray-700 cursor-pointer">
             <TweetHeader
@@ -36,7 +90,12 @@ export default function Tweet({ data, id }) {
                 >
                     <ChatIcon className="w-5 cursor-pointer hover:text-green-400" />
                 </div>
+
+                <div
+                onClick={likeComment}
+                >
                 <HeartIcon className="w-5 cursor-pointer hover:text-pink-400" />
+                </div>
                 <ChartBarIcon className="w-5 cursor-not-allowed" />
                 <UploadIcon className="w-5 cursor-not-allowed" />
             </div>
