@@ -3,6 +3,7 @@ import Tweet from "./Tweet";
 import TweetInput from "./TweetInput";
 import { db } from "@/firebase";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function PostsFeed() {
 
@@ -44,10 +45,16 @@ export default function PostsFeed() {
                 {/* map the tweets */}
 
                 {tweets.map(tweet => {
-                    return <Tweet key={tweet.id} id={tweet.id} data={tweet.data()}/>
-                    // i am getting the tweet from the tweets array useState
-                    // i set the Tweets to the snapshot.docs
-                    // my tweets is an array full of docs
+                    return (
+                        // instead of returning the tweet like 
+                        // before i wrap it with link component.
+                        <Link href={tweet.id} key={tweet.id}>
+                        <Tweet id={tweet.id} data={tweet.data()}/>
+                        </Link>
+                        //now when i click on the tweet i go to / the id of that tweet
+                        // because of the context object from the context object i get the id
+                        // const id = context.query.id in [id].js
+                    )
                 })}
 
                 <Tweet />
