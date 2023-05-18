@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function CommentModal() {
     //passing in my state and returning 
     const isOpen = useSelector(state => state.modals.commentModalOpen)
+    const userImg = useSelector(state => state.user.photoUrl)
     const TweetDetails = useSelector(state => state.modals.commentTweetDetails)
     const dispatch = useDispatch()
     return (
@@ -33,7 +34,7 @@ export default function CommentModal() {
                     <div className="mt-8">
                         <div className="flex space-x-3">
                             <img className="w-12 h-12 object-cover rounded-full"
-                                src="/assets/kylie.png" />
+                                src={TweetDetails.photoUrl} />
                             <div>
                                 <div className="flex space-x-1.5">
                                     <h1 className="font-bold">{TweetDetails.name}</h1>
@@ -49,7 +50,7 @@ export default function CommentModal() {
                     <div className="mt-4">
                         <div className="flex space-x-3">
                             <img className="w-12 h-12 object-cover rounded-full"
-                                src="/assets/kylie.png" />
+                                src={userImg} />
                             <div className="w-full">
                                 <textarea
                                     placeholder="Tweet your reply"
