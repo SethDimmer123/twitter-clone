@@ -1,14 +1,39 @@
+import { db } from "@/firebase";
 import { closeCommentModal } from "@/redux/modalSlice";
 import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import Modal from "@mui/material/Modal";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CommentModal() {
     //passing in my state and returning 
     const isOpen = useSelector(state => state.modals.commentModalOpen)
     const userImg = useSelector(state => state.user.photoUrl)
-    const TweetDetails = useSelector(state => state.modals.commentTweetDetails)
+    const tweetDetails = useSelector(state => state.modals.commentTweetDetails)
+    const user = useSelector(state => state.user)
     const dispatch = useDispatch()
+
+    const [comment,setComment] = useState("")
+
+    async function sendComment(){
+        //functionaility to setup sending comments from a posted tweet. 
+        const docRef = doc(db, "posts", tweetDetails.id)
+        // reference to the document
+        // i use a function from firebase called doc
+        // 3rd arguement is the id of the tweet which is from const tweetDetails
+        const commentDetails = {
+            username:user.username,
+            name:user.name,
+            photoUrl: user.photoUrl,
+            comment:comment
+        }
+        updateDoc(docRef, {
+            comments: arrayUnion(commentDetails)
+            // if i want to add an element to an array in firebase i need to use this arrayUnion function
+            // then i pass in what i want to add. commentDetails in this case.
+        })
+    }
     return (
         // after importing the modal i need to create 
         // the state and actions to open and close the Modal.
@@ -34,15 +59,15 @@ export default function CommentModal() {
                     <div className="mt-8">
                         <div className="flex space-x-3">
                             <img className="w-12 h-12 object-cover rounded-full"
-                                src={TweetDetails.photoUrl} />
+                                src={tweetDetails.photoUrl} />
                             <div>
                                 <div className="flex space-x-1.5">
-                                    <h1 className="font-bold">{TweetDetails.name}</h1>
-                                    <h1 className="text-gray-500">@{TweetDetails.username}</h1>
+                                    <h1 className="font-bold">{tweetDetails.name}</h1>
+                                    <h1 className="text-gray-500">@{tweetDetails.username}</h1>
                                 </div>
-                                <p className="mt-1">{TweetDetails.tweet}</p>
+                                <p className="mt-1">{tweetDetails.tweet}</p>
                                 <h1 className="text-gray-500 text-[15px] mt-2">
-                                    Replying to <span className="text-[#1b9bf0]">@{TweetDetails.username}</span></h1>
+                                    Replying to <span className="text-[#1b9bf0]">@{tweetDetails.username}</span></h1>
                             </div>
                         </div>
                     </div>
@@ -55,7 +80,9 @@ export default function CommentModal() {
                                 <textarea
                                     placeholder="Tweet your reply"
                                     className="w-full text-lg outline-none
-                                bg-transparent resize-none"/>
+                                bg-transparent resize-none"
+                                
+                                onChange={e => setComment(e.target.value)}/>
 
                                 <div className="pt-4 flex justify-between border-t border-gray-700">
                                     <div className="flex space-x-0">
@@ -78,7 +105,12 @@ export default function CommentModal() {
                                     </div>
                                     <button
                                     className="bg-[#1d9bf0] rounded-full px-4 py-1.5 
-                                    disabled:opacity-50">Tweet</button>
+                                    disabled:opacity-50"
+                                    disabled={!comment}
+                                    onClick={sendComment}
+                                    // calling the async function so when click tweet button a comment gets added to firebase.
+                                    >
+                                        Tweet</button>
                                 </div>
                             </div>
                         </div>

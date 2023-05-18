@@ -2,7 +2,7 @@ import { openCommentModal, setCommentTweet } from "@/redux/modalSlice"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
 import Moment from "react-moment"
 import { useDispatch } from "react-redux"
-export default function Tweet({ data,id }) {
+export default function Tweet({ data, id }) {
 
     const dispatch = useDispatch()
     return (
