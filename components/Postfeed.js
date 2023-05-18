@@ -46,15 +46,8 @@ export default function PostsFeed() {
 
                 {tweets.map(tweet => {
                     return (
-                        // instead of returning the tweet like 
-                        // before i wrap it with link component.
-                        <Link href={tweet.id} key={tweet.id}>
-                        <Tweet id={tweet.id} data={tweet.data()}/>
-                        </Link>
-                        //now when i click on the tweet i go to / the id of that tweet
-                        // because of the context object from the context object i get the id
-                        // const id = context.query.id in [id].js
-                    )
+                        <Tweet key={tweet.id} id={tweet.id} data={tweet.data()}/>
+                    )//deleted the link component to prevent navigating to comments page when clicking chat icon
                 })}
 
                 {/* <Tweet /> */}

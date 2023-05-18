@@ -3,6 +3,7 @@ import { closeCommentModal } from "@/redux/modalSlice";
 import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import Modal from "@mui/material/Modal";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,6 +16,7 @@ export default function CommentModal() {
     const dispatch = useDispatch()
 
     const [comment,setComment] = useState("")
+    const router = useRouter()
 
     async function sendComment(){
         //functionaility to setup sending comments from a posted tweet. 
@@ -33,6 +35,12 @@ export default function CommentModal() {
             // if i want to add an element to an array in firebase i need to use this arrayUnion function
             // then i pass in what i want to add. commentDetails in this case.
         })
+
+        // navigating to the comments page after i made a comment.
+        // closing the modal AFTER getting routed to the comments page
+        dispatch(closeCommentModal())
+
+        router.push("/" + tweetDetails.id)
     }
     return (
         // after importing the modal i need to create 

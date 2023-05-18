@@ -1,12 +1,15 @@
 import { openCommentModal, setCommentTweet } from "@/redux/modalSlice"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
+import { useRouter } from "next/router"
 import Moment from "react-moment"
 import { useDispatch } from "react-redux"
+
 export default function Tweet({ data, id }) {
 
     const dispatch = useDispatch()
+    const router = useRouter()
     return (
-        <div className="border-b border-gray-700">
+        <div className="border-b border-gray-700 cursor-pointer">
             <TweetHeader
                 username={data?.username}
                 name={data?.name}
@@ -14,10 +17,13 @@ export default function Tweet({ data, id }) {
                 text={data?.tweet}
                 photoUrl={data?.photoUrl}
             />
-            <div className="p-3 ml-16 text-gray-500 flex space-x-14">
+            <div
+            onClick={() => router.push("/" + id)}//i am pushing the id of the tweet.
+            className="p-3 ml-16 text-gray-500 flex space-x-14">
                 {/* wrapping the chat icon in a div because when i add a comment i want to display how many comments there are. */}
                 <div
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation()//when i press the comment icon i dont get navigated to the comments page
                         dispatch(setCommentTweet({
                             id: id,
                             tweet: data?.tweet,
