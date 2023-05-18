@@ -119,6 +119,25 @@ export default function CommentPage({ tweetData }) {
                         Tweet
                     </button>
                     </div>
+
+                    {tweetData.comments?.map(comment => (
+                <div className="border-b border-gray-700">
+                <div className="flex space-x-3 p-3  border-gray-700">
+                    <img className="w-11 h-11 rounded-full object-cover"
+                        src={tweetData.photoUrl}
+                    />
+                    <div>
+                        <div className="flex space-x-2 text-gray-500 items-center mb-1">
+                            <h1 className="text-white font-bold">{comment.name}</h1>
+                            <span>@{comment.username}</span>
+                            <div className=" w-1 h-1 bg-gray-500 rounded-full"></div>
+                        </div>
+
+                        <span className="text-2xl">{comment.text}</span>
+                    </div>
+                </div>
+            </div>
+                    ))}
                 </div>
 
                 {/* </div> */}
