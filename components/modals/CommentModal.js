@@ -1,5 +1,5 @@
 import { closeCommentModal } from "@/redux/modalSlice";
-import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon } from "@heroicons/react/outline";
+import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import Modal from "@mui/material/Modal";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,13 +16,20 @@ export default function CommentModal() {
             <Modal
                 className="flex justify-center items-center"
                 open={isOpen} onClose={() => dispatch(closeCommentModal())}>
-                <div className=" w-full h-full 
+                <div className=" w-full h-full relative
                 rounded-lg bg-black border border-gray-500
                 sm:w-[600px] sm:h-[386px] text-white
                 sm:p-10 p-4
                 "
                 >
-                    <div>
+                    <div className="absolute w-[2px] h-[50px] bg-gray-500 
+                    left-[40px] top-[96px] sm:left-[64px] sm:top-[120px]"></div>
+                    <div 
+                    onClick={() => dispatch(closeCommentModal())}
+                    className="absolute top-4 cursor-pointer">
+                        <XIcon className="w-6"/>
+                    </div>
+                    <div className="mt-8">
                         <div className="flex space-x-3">
                             <img className="w-12 h-12 object-cover rounded-full"
                                 src="/assets/kylie.png" />
