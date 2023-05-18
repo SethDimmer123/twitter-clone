@@ -44,7 +44,7 @@ export default function PostsFeed() {
                 {/* map the tweets */}
 
                 {tweets.map(tweet => {
-                    return <Tweet key={tweet.id} data={tweet.data()}/>
+                    return <Tweet key={tweet.id} id={tweet.id} data={tweet.data()}/>
                     // i am getting the tweet from the tweets array useState
                     // i set the Tweets to the snapshot.docs
                     // my tweets is an array full of docs

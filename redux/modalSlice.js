@@ -6,6 +6,19 @@ const initialState = {
     signupModalOpen: false,
     loginModalOpen:false,
     commentModalOpen:false,
+
+    commentTweetDetails: {
+//object that contains all the information about the tweet and 
+// the id so i can update the document of this tweet.
+
+id:null,
+tweet:null,
+photoUrl:null,
+name:null,
+username:null,
+
+
+    }
 }
 
 const modalSlice = createSlice({
@@ -32,6 +45,14 @@ const modalSlice = createSlice({
     closeCommentModal: (state) => {
         state.commentModalOpen = false;
     },
+
+    setCommentTweet: (state,action) => {
+        state.commentTweetDetails.username = action.payload.username,
+        state.commentTweetDetails.name = action.payload.name,
+        state.commentTweetDetails.id = action.payload.uid,
+        state.commentTweetDetails.photoUrl = action.payload.photoUrl
+        state.commentTweetDetails.tweet = action.payload.tweet
+    }
   },
 });
 
@@ -42,6 +63,7 @@ export const {
     closeLoginModal,
     openCommentModal,
     closeCommentModal,
+    setCommentTweet
 } = modalSlice.actions
 // exported the actions
 

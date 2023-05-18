@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function CommentModal() {
     //passing in my state and returning 
     const isOpen = useSelector(state => state.modals.commentModalOpen)
+    const TweetDetails = useSelector(state => state.modals.commentTweetDetails)
     const dispatch = useDispatch()
     return (
         // after importing the modal i need to create 
@@ -35,12 +36,12 @@ export default function CommentModal() {
                                 src="/assets/kylie.png" />
                             <div>
                                 <div className="flex space-x-1.5">
-                                    <h1 className="font-bold">kylie</h1>
-                                    <h1 className="text-gray-500">@kylie</h1>
+                                    <h1 className="font-bold">{TweetDetails.name}</h1>
+                                    <h1 className="text-gray-500">@{TweetDetails.username}</h1>
                                 </div>
-                                <p className="mt-1">This is awesome</p>
+                                <p className="mt-1">{TweetDetails.tweet}</p>
                                 <h1 className="text-gray-500 text-[15px] mt-2">
-                                    Replying to <span className="text-[#1b9bf0]">@seth</span></h1>
+                                    Replying to <span className="text-[#1b9bf0]">@{TweetDetails.username}</span></h1>
                             </div>
                         </div>
                     </div>
