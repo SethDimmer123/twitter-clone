@@ -1,5 +1,5 @@
 import { db } from "@/firebase"
-import { openCommentModal, setCommentTweet } from "@/redux/modalSlice"
+import { openCommentModal, openLoginModal, setCommentTweet } from "@/redux/modalSlice"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
 import { HeartIcon as FilledHeartIcon } from "@heroicons/react/solid"
 import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
@@ -28,6 +28,18 @@ export default function Tweet({ data, id }) {
         // i pass in the element user.uid which is a string in this case 
         // if it is in the array it will return true 
         // if it isn't it will return false
+
+        // when i am not signed in and i try to like or comment i DO 
+        // NOT WANT THE COMMENT MODAL TO SHOW UP
+        // I WANT THE SIGN IN MODAL TO POP UP
+
+        if(!user.username){
+            dispatch(openLoginModal())
+            return
+        }
+
+
+
         if(likes.includes(user.uid)) {
             // if i want to unlike (remove my uid from the likes array)
             await updateDoc(doc(db, "posts", id), {
@@ -81,6 +93,11 @@ export default function Tweet({ data, id }) {
                 <div className="flex justify-center items-center space-x-2"
                     onClick={(e) => {
                         e.stopPropagation()//when i press the comment icon i dont get navigated to the comments page
+                        
+                        if (!user.username){
+                            dispatch(openLoginModal())
+                            return
+                        }
                         dispatch(setCommentTweet({
                             id: id,
                             tweet: data?.tweet,
