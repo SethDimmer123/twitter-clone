@@ -16,6 +16,7 @@ export default function Tweet({ data, id }) {
 
 
     const [likes,setLikes] = useState([])
+    const [comments,setComments] = useState([])
 
     // added liking and getting number of likes in the comments and displaying it 
     // and unliking it.
@@ -57,6 +58,7 @@ export default function Tweet({ data, id }) {
         if (!id) return
         const unsubscribe = onSnapshot(doc(db,"posts",id),(doc) =>{
             setLikes(doc.data().likes)
+            setComments(doc.data().comments)
         });
 
         return unsubscribe
@@ -76,7 +78,7 @@ export default function Tweet({ data, id }) {
             onClick={() => router.push("/" + id)}//i am pushing the id of the tweet.
             className="p-3 ml-16 text-gray-500 flex space-x-14">
                 {/* wrapping the chat icon in a div because when i add a comment i want to display how many comments there are. */}
-                <div
+                <div className="flex justify-center items-center space-x-2"
                     onClick={(e) => {
                         e.stopPropagation()//when i press the comment icon i dont get navigated to the comments page
                         dispatch(setCommentTweet({
@@ -90,6 +92,7 @@ export default function Tweet({ data, id }) {
                     }}
                 >
                     <ChatIcon className="w-5 cursor-pointer hover:text-green-400" />
+                    {comments?.length > 0 && <span>{comments.length}</span>}
                 </div>
 
                 <div className="flex justify-center items-center space-x-2"
