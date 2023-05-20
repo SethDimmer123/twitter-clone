@@ -1,7 +1,8 @@
-import { db } from "@/firebase";
+import { db, storage } from "@/firebase";
 import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import { createImmutableStateInvariantMiddleware } from "@reduxjs/toolkit";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -49,8 +50,46 @@ export default function TweetInput() {
             timestamp: serverTimestamp(),
             likes: [],
             tweet:text//text is the actual tweet
-
         })
+        // checking if the image was uploaded or not.
+        // creating a reference to the image and upload it to firebase storage
+        if(image){
+            // create image ref
+            const imageRef = ref(storage, `tweetImages/${docRef.id}`)
+                                // passing in 2 arguements storage, 
+                                // and a string which is the path to my image in the storage.
+                                // using backticks because it is dynamic id of my doc
+
+            // now i have the image ref i need to 
+            // upload the image to the firebase storage.
+
+         const uploadImage = await uploadString(imageRef, image, "data_url")
+                                    // i use uploadString function
+                                    // i pass in 3 things
+                                    // imageRef
+                                    // image
+                                    // and what data format
+
+                // once the image is uploaded to my storage 
+         // i want to get the download url of that image to show it in my tweet
+
+         const downloadURL = await getDownloadURL(imageRef)
+                                // i pass in my image ref
+
+            // i now want to display it in my tweet 
+            // i need to update the sendTweet function 
+            // so i can have the image inside the sendTweet function
+
+            await updateDoc(doc(db,"posts", docRef.id), {
+                image: downloadURL
+            })
+
+        
+
+
+
+        }
+
         setText("")// once i submit a tweet to firebase i want text to be set to an empty string again.
 
     }

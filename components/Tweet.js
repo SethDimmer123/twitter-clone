@@ -90,6 +90,7 @@ export default function Tweet({ data, id }) {
                 timestamp={data?.timestamp?.toDate()}
                 text={data?.tweet}
                 photoUrl={data?.photoUrl}
+                image={data?.image}
             />
             <div
             onClick={() => router.push("/" + id)}//i am pushing the id of the tweet.
@@ -143,7 +144,7 @@ export default function Tweet({ data, id }) {
 }
 
 // modifying my tweets so i can display the data this is after i worked on displaying the tweets on postfeed.js
-export function TweetHeader({ username, name, timestamp, text, photoUrl }) {//accepting props
+export function TweetHeader({ username, name, timestamp, text, photoUrl, image }) {//accepting props
     //custom component to reuse this component.
     //  exporting it so i can reuse it in other components.
     return (
@@ -162,6 +163,11 @@ export function TweetHeader({ username, name, timestamp, text, photoUrl }) {//ac
                 </div>
 
                 <span>{text}</span>
+                {/* shows me the image in the tweet from tweetInput.js added image prop to TweetHeader  */}
+
+                {/* conditionally rendered image if the image is there */}
+                {image
+                 && <img className="object-cover rounded-md mt-3 max-h-80 border border-gray-700" src={image} />}
             </div>
         </div>
     )
