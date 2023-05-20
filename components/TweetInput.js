@@ -142,7 +142,8 @@ export default function TweetInput() {
 
                     <button 
                     onClick={sendTweet}
-                    disabled={!text}//if there is nothing in the textarea then the tweet button is disabled.
+                    //if there is nothing in the textarea then the tweet button is disabled.
+                    disabled={!text && !image}//if there is no image the tweet button is disabled
                     className="bg-[#1d9bf0] rounded-full px-4 py-1.5 
                     disabled:opacity-50">
                         Tweet
