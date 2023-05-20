@@ -1,10 +1,11 @@
 import { db, storage } from "@/firebase";
+import { openLoginModal } from "@/redux/modalSlice";
 import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import { createImmutableStateInvariantMiddleware } from "@reduxjs/toolkit";
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function TweetInput() {
     // writing the function to write the post to the firestore database.
@@ -29,7 +30,14 @@ export default function TweetInput() {
     const filePickerRef = useRef(null)
 
     //i have the text but now i have to send it over to my firestore database. 
+    const dispatch = useDispatch()
     async function sendTweet() {
+
+        // making sure i cannot post anything if i am signed out completely 
+        if(!user.username) {
+            dispatch(openLoginModal())
+            return
+        }
 
         setLoading(true)
         // adding documents to firebase this how i do it.
@@ -53,7 +61,7 @@ export default function TweetInput() {
             timestamp: serverTimestamp(),
             likes: [],
             tweet:text//text is the actual tweet
-        })
+        });
         // checking if the image was uploaded or not.
         // creating a reference to the image and upload it to firebase storage
         if(image){
