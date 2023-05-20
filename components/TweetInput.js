@@ -19,6 +19,7 @@ export default function TweetInput() {
     // i upload image to storage once its applied to 
     // storage then i display it in my twitter
     const [image, setImage] = useState(null)
+    const [loading, setLoading] = useState(false)
     // if a user selects an image then i make the image true
     // if my image state is true then i want to display the
     // image in our div.
@@ -29,6 +30,8 @@ export default function TweetInput() {
 
     //i have the text but now i have to send it over to my firestore database. 
     async function sendTweet() {
+
+        setLoading(true)
         // adding documents to firebase this how i do it.
         const docRef = await addDoc(collection(db, "posts"), {
             //i pass in where i want the document to be in i use function called collection.
@@ -91,6 +94,8 @@ export default function TweetInput() {
         }
 
         setText("")// once i submit a tweet to firebase i want text to be set to an empty string again.
+        setImage(null)
+        setLoading(false)
 
     }
     // this is how i actually select a file and display it on the tweet
@@ -118,7 +123,10 @@ export default function TweetInput() {
             <img
                 className="w-11 h-11 rounded-full object-cover" src={user.photoUrl || "/assets/twitter-logo.png"} />
 
-            <div className="w-full">{/**takes entire width of the div */}
+                {/*if its loading display the h1 uploading post   */}
+                {loading && <h1 className="text-2xl text-gray-500">Uploading post...</h1>}
+
+            { !loading && (<div className="w-full">{/**takes entire width of the div */}
                 <textarea
                     placeholder="What's on your mind?"
                     className="bg-transparent resize-none outline-none w-full
@@ -188,7 +196,8 @@ export default function TweetInput() {
                         Tweet
                     </button>
                 </div>
-            </div>
+            </div>)}
+            {/* this div will only be displayed if it's not loading */}
         </div>
     )
 }

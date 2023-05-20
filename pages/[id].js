@@ -39,10 +39,12 @@ export async function getServerSideProps(context) {
         text: data.tweet,
         comments: data.comments || null,
         // sometimes when the comments do not exist i want it to be null
-        timestamp: JSON.stringify(data.timestamp.toDate())
+        timestamp: JSON.stringify(data.timestamp.toDate()),
         //i essentially turned the timestamp into a format 
         //  that moment JS can turn it into the twitter timeStamp 
         // (a few seconds ago)
+        image:data.image || null
+        // prop of image to display image in comments page
     }
     return {
         props: {
@@ -102,6 +104,10 @@ export default function CommentPage({ tweetData }) {
                                 </div>
 
                                 <span className="text-2xl">{tweetData.text}</span>
+
+                                {/* image will show up in the comments page when i click the image */}
+                                {tweetData.image
+                                && <img className="object-cover rounded-md mt-3 max-h-80 border border-gray-700" src={tweetData.image} />}
                             </div>
                         </div>
                     </div>
