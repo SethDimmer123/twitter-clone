@@ -1,8 +1,8 @@
 import { db } from "@/firebase"
 import { openCommentModal, openLoginModal, setCommentTweet } from "@/redux/modalSlice"
-import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
+import { ChartBarIcon, ChatIcon, HeartIcon, TrashIcon, UploadIcon } from "@heroicons/react/outline"
 import { HeartIcon as FilledHeartIcon } from "@heroicons/react/solid"
-import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
+import { arrayRemove, arrayUnion, deleteDoc, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import Moment from "react-moment"
@@ -16,7 +16,12 @@ export default function Tweet({ data, id }) {
 
 
     const [likes,setLikes] = useState([])
-    const [comments,setComments] = useState([])
+    const [comments,setComments] = useState([]);
+
+    async function deleteTweet(e){
+        e.stopPropagation()
+        await deleteDoc(doc(db,"posts" ,id))
+    }
 
     // added liking and getting number of likes in the comments and displaying it 
     // and unliking it.
@@ -69,8 +74,8 @@ export default function Tweet({ data, id }) {
 
         if (!id) return
         const unsubscribe = onSnapshot(doc(db,"posts",id),(doc) =>{
-            setLikes(doc.data().likes)
-            setComments(doc.data().comments)
+            setLikes(doc.data()?.likes)
+            setComments(doc.data()?.comments)
         });
 
         return unsubscribe
@@ -93,7 +98,7 @@ export default function Tweet({ data, id }) {
                 <div className="flex justify-center items-center space-x-2"
                     onClick={(e) => {
                         e.stopPropagation()//when i press the comment icon i dont get navigated to the comments page
-                        
+
                         if (!user.username){
                             dispatch(openLoginModal())
                             return
@@ -124,6 +129,12 @@ export default function Tweet({ data, id }) {
                     {/* if likes is more than 0 display the like number */}
                     {likes.length > 0 && <span>{likes.length}</span>}
                 </div>
+                {user.uid === data?.uid && (<div
+                
+                className="cursor-pointer hover:text-red-600"
+                onClick={deleteTweet}>
+                    <TrashIcon className="w-5"/>
+                </div>)}
                 <ChartBarIcon className="w-5 cursor-not-allowed" />
                 <UploadIcon className="w-5 cursor-not-allowed" />
             </div>
