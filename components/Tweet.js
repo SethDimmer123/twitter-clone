@@ -92,7 +92,7 @@ export default function Tweet({ data, id }) {
                     <ChatIcon className="w-5 cursor-pointer hover:text-green-400" />
                 </div>
 
-                <div
+                <div className="flex justify-center items-center space-x-2"
                 onClick={likeComment}
                 >
                     {/* condititonally rendering the heart icon */}
@@ -101,6 +101,8 @@ export default function Tweet({ data, id }) {
                     ) : ( 
                 <HeartIcon className="w-5 cursor-pointer hover:text-pink-400" />
                     )}
+                    {/* if likes is more than 0 display the like number */}
+                    {likes.length > 0 && <span>{likes.length}</span>}
                 </div>
                 <ChartBarIcon className="w-5 cursor-not-allowed" />
                 <UploadIcon className="w-5 cursor-not-allowed" />
