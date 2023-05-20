@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 // get auth is for when user can create an account and sign in
 import {getAuth} from"firebase/auth"
 import {getFirestore} from "firebase/firestore"
+import {getStorage} from "firebase/storage"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,3 +22,4 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app)//initialized for access to
 //  firestore database for sending a tweet to firestore db
 export const auth = getAuth(app)
+export const storage = getStorage()

@@ -1,8 +1,8 @@
 import { db } from "@/firebase";
-import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon } from "@heroicons/react/outline";
+import { CalendarIcon, ChartBarIcon, EmojiHappyIcon, LocationMarkerIcon, PhotographIcon, XIcon } from "@heroicons/react/outline";
 import { createImmutableStateInvariantMiddleware } from "@reduxjs/toolkit";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function TweetInput() {
@@ -14,6 +14,17 @@ export default function TweetInput() {
     // created a state for textarea so i can bind it and actually get my tweet.
     const [text, setText] = useState("")
 
+    // adding images to tweets with firebase storage
+    // i upload image to storage once its applied to 
+    // storage then i display it in my twitter
+    const [image, setImage] = useState(null)
+    // if a user selects an image then i make the image true
+    // if my image state is true then i want to display the
+    // image in our div.
+    
+    // i am using a useRef hook to reference 
+    // my input on line() to select a file.
+    const filePickerRef = useRef(null)
 
     //i have the text but now i have to send it over to my firestore database. 
     async function sendTweet() {
@@ -41,6 +52,27 @@ export default function TweetInput() {
 
         })
         setText("")// once i submit a tweet to firebase i want text to be set to an empty string again.
+
+    }
+    // this is how i actually select a file and display it on the tweet
+    
+            function addImagetoTweet(e){
+                // i need to open a file reader and 
+                // read the image the user just opened and turn it into a URL
+                // to display it 
+                const reader = new FileReader()
+                // i need to check if the user did select a file
+                if(e.target.files[0]){
+            // if the file does exist then i want to read it as a URL
+                    reader.readAsDataURL(e.target.files[0])
+                    // choosing the first element from the array.
+    
+                    // after doing all of this i need to set the URL 
+                    // to my image
+                }
+                reader.addEventListener("load", e =>{
+                    setImage(e.target.result)
+                })
     }
     return (
         <div className="flex space-x-3 p-3 border-b border-gray-700">
@@ -56,15 +88,43 @@ export default function TweetInput() {
                     value={text
                     // my value is now binded to the text useState
                     } />
+            {/* conditionally rendering image if my image is true */}
+            {/* if the image is true then i want to show the image */}
+                    {image && (
+                        <div className=" relative mb-4">
+                            <div  onClick={() => setImage(null)}
+                            className="absolute top-1 left-1
+                                bg-[#272c26] rounded-full w-8 h-8 flex 
+                                justify-center items-center cursor-pointer
+                                 hover:bg-white hover:bg-opacity-10">
+                                <XIcon className="h-5"/>
+                            </div>
+
+                            <img 
+                            className="rounded-2xl max-h-80 object-contain"
+                            src={image} 
+                            />
+                        </div>
+                    )}
 
 
 
                 <div className="flex justify-between border-t border-gray-700 pt-4">
                     {/* ICONS DIV */}
                     <div className="flex space-x-0">
-                        <div className="iconAnimation">
+                        <div
+                        //the onLcick is if i click the input file
+                        // have a function then reference the filePicker
+                        // .current is for the property inside 
+                        // .click is a function so i need to call it
+                        onClick={() => filePickerRef.current.click()}
+                        className="iconAnimation">
                             <PhotographIcon className="h-[22px] text-[#1d9bf0]" />
                         </div>
+                        <input 
+                        ref={filePickerRef}//ref to reference my useRef hook.
+                        onChange={addImagetoTweet}
+                        hidden type="file"/>
                         <div className="iconAnimation">
                             <ChartBarIcon className="h-[22px] text-[#1d9bf0]" />
                         </div>
