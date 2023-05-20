@@ -1,6 +1,7 @@
 import { db } from "@/firebase"
 import { openCommentModal, setCommentTweet } from "@/redux/modalSlice"
 import { ChartBarIcon, ChatIcon, HeartIcon, UploadIcon } from "@heroicons/react/outline"
+import { HeartIcon as FilledHeartIcon } from "@heroicons/react/solid"
 import { arrayRemove, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -94,7 +95,12 @@ export default function Tweet({ data, id }) {
                 <div
                 onClick={likeComment}
                 >
+                    {/* condititonally rendering the heart icon */}
+                    {likes.includes(user.uid) ? (
+                    <FilledHeartIcon className="w-5 text-pink-500"/> 
+                    ) : ( 
                 <HeartIcon className="w-5 cursor-pointer hover:text-pink-400" />
+                    )}
                 </div>
                 <ChartBarIcon className="w-5 cursor-not-allowed" />
                 <UploadIcon className="w-5 cursor-not-allowed" />
@@ -128,3 +134,5 @@ export function TweetHeader({ username, name, timestamp, text, photoUrl }) {//ac
     )
 
 }
+
+
