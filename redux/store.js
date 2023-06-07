@@ -9,4 +9,3 @@ export const store = configureStore({
       user: userSlice
   },
 })
-// now i have access to the modal state everywhere

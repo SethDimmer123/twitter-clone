@@ -9,8 +9,7 @@ export default function LoginModal() {
 
 
     const isOpen = useSelector((state) => state.modals.loginModalOpen);
-    // i am using the useDipsatch hook to use
-    //  the handleClose functions i already made from useStates.
+
     const dispatch = useDispatch()
     // console.log(isOpen)
 
@@ -30,7 +29,7 @@ export default function LoginModal() {
               className="bg-transparent border border-white text-white
               w-[160px] rounded-full h-[40px] hover:bg-[#cbd2d7]"
                 onClick={() => dispatch(openLoginModal())}
-            //  to open the modal i have a function with a dispatch hook
+
             >
                 Log In</button>
 
@@ -38,7 +37,6 @@ export default function LoginModal() {
 
                 open={isOpen}
                 onClose={() => dispatch(closeLoginModal())}
-                // to close it i have a function with dispatch hook
                 className="flex justify-center items-center"
             >
                 <div className="w-[90%] h-[600px] bg-black text-white md:w-[560px]

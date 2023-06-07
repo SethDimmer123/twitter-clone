@@ -23,20 +23,10 @@ export default function Tweet({ data, id }) {
         await deleteDoc(doc(db,"posts" ,id))
     }
 
-    // added liking and getting number of likes in the comments and displaying it 
-    // and unliking it.
+
 
     async function likeComment(e) {
         e.stopPropagation()
-        // checking if uid is in the likes array
-        // .includes function checks if an element is an array or not
-        // i pass in the element user.uid which is a string in this case 
-        // if it is in the array it will return true 
-        // if it isn't it will return false
-
-        // when i am not signed in and i try to like or comment i DO 
-        // NOT WANT THE COMMENT MODAL TO SHOW UP
-        // I WANT THE SIGN IN MODAL TO POP UP
 
         if(!user.username){
             dispatch(openLoginModal())
@@ -46,30 +36,21 @@ export default function Tweet({ data, id }) {
 
 
         if(likes.includes(user.uid)) {
-            // if i want to unlike (remove my uid from the likes array)
             await updateDoc(doc(db, "posts", id), {
-                //  i am using the arrayRemove method to 
-                // remove an element from the array.
-                // removing my uid in this case
                 likes: arrayRemove(user.uid)
 
             })
         }
         else {
             await updateDoc(doc(db, "posts", id), {
-                // 2nd arguement is what i want to update in this case 
-                // i want to update the likes array. 
+
                 likes:arrayUnion(user.uid)
-                //  i use the arrayUnion method to add likes
-        })
+            })
 
         }
     }
 
-    // functionaility for unliking a post
-    //check if the uid is in the likes array if it is then i unlike it (in firebase)
-    // if the uid is not in the likes array then i like it
-    // i need to use a useEffect
+
     useEffect(() => {
 
         if (!id) return
@@ -93,12 +74,12 @@ export default function Tweet({ data, id }) {
                 image={data?.image}
             />
             <div
-            onClick={() => router.push("/" + id)}//i am pushing the id of the tweet.
+            onClick={() => router.push("/" + id)}
             className="p-3 ml-16 text-gray-500 flex space-x-14">
-                {/* wrapping the chat icon in a div because when i add a comment i want to display how many comments there are. */}
+
                 <div className="flex justify-center items-center space-x-2"
                     onClick={(e) => {
-                        e.stopPropagation()//when i press the comment icon i dont get navigated to the comments page
+                        e.stopPropagation()
 
                         if (!user.username){
                             dispatch(openLoginModal())
@@ -121,13 +102,11 @@ export default function Tweet({ data, id }) {
                 <div className="flex justify-center items-center space-x-2"
                 onClick={likeComment}
                 >
-                    {/* condititonally rendering the heart icon */}
                     {likes.includes(user.uid) ? (
                     <FilledHeartIcon className="w-5 text-pink-500"/> 
                     ) : ( 
                 <HeartIcon className="w-5 cursor-pointer hover:text-pink-400" />
                     )}
-                    {/* if likes is more than 0 display the like number */}
                     {likes.length > 0 && <span>{likes.length}</span>}
                 </div>
                 {user.uid === data?.uid && (<div
@@ -143,10 +122,8 @@ export default function Tweet({ data, id }) {
     );
 }
 
-// modifying my tweets so i can display the data this is after i worked on displaying the tweets on postfeed.js
-export function TweetHeader({ username, name, timestamp, text, photoUrl, image }) {//accepting props
-    //custom component to reuse this component.
-    //  exporting it so i can reuse it in other components.
+export function TweetHeader({ username, name, timestamp, text, photoUrl, image }) {
+
     return (
         <div className="flex space-x-3 p-3  border-gray-700">
             <img className="w-11 h-11 rounded-full object-cover"
@@ -163,9 +140,7 @@ export function TweetHeader({ username, name, timestamp, text, photoUrl, image }
                 </div>
 
                 <span>{text}</span>
-                {/* shows me the image in the tweet from tweetInput.js added image prop to TweetHeader  */}
 
-                {/* conditionally rendered image if the image is there */}
                 {image
                  && <img className="object-cover rounded-md mt-3 max-h-80 border border-gray-700" src={image} />}
             </div>

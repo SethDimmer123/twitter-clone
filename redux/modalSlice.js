@@ -1,5 +1,4 @@
-// creating my slices so i can open and close my Modals
-// rxslice
+
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
@@ -9,8 +8,7 @@ const initialState = {
 
 
 
-    //object that contains all the information about the tweet and 
-    // the id so i can update the document of this tweet.
+
     commentTweetDetails: {
         id: null,
         tweet: null,
@@ -23,16 +21,14 @@ const initialState = {
 const modalSlice = createSlice({
     name: "modal",
     initialState,
-    reducers: {//inside the reducers i have my actions
-        openSignupModal: (state) => {//the first action is openSignupModal
-            // this action makes the signUpModalOpen: true 
+    reducers: {
+        openSignupModal: (state) => {
             state.signupModalOpen = true
         },
         closeSignupModal: (state) => {
             state.signupModalOpen = false
         },
-        openLoginModal: (state) => {//the first action is openLoginModal
-            // this action makes the loginModalOpen: true 
+        openLoginModal: (state) => {
             state.loginModalOpen = true
         },
         closeLoginModal: (state) => {
@@ -64,6 +60,6 @@ export const {
     closeCommentModal,
     setCommentTweet
 } = modalSlice.actions
-// exported the actions
+
 
 export default modalSlice.reducer;

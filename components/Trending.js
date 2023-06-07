@@ -1,7 +1,6 @@
 import { DotsHorizontalIcon, SearchIcon } from "@heroicons/react/outline";
 import { BadgeCheckIcon } from "@heroicons/react/solid"
 export default function Trending() {
-    // the trending tab needs to disappear on smaller screens 
     return (
         <div className="hidden lg:flex flex-col ml-7 mt-4">
 

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 
-/* this is where i create my own custom classes */
+/* created my own custom classes */
 
 
 body{
@@ -11,13 +11,9 @@ body{
 }
 
 .hoverAnimation{
-  /*on the extra large breakpoint i want padding 3*/
+
 @apply hover:cursor-pointer hover:bg-white hover:bg-opacity-10 rounded-full xl:p-3
 w-11 h-11 xl:w-auto xl:h-auto
-/* on bigger screen-size my sidebar icons don't appear properly
-becuase i gave a fixed height and width of 11.
-To fix that i put an xl breakpoint and set it to auto for width and height
-to display my content CORRECTLY  */
 }
 
 .iconAnimation{

@@ -8,7 +8,6 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function CommentModal() {
-    //passing in my state and returning 
     const isOpen = useSelector(state => state.modals.commentModalOpen)
     const userImg = useSelector(state => state.user.photoUrl)
     const tweetDetails = useSelector(state => state.modals.commentTweetDetails)
@@ -19,11 +18,7 @@ export default function CommentModal() {
     const router = useRouter()
 
     async function sendComment(){
-        //functionaility to setup sending comments from a posted tweet. 
         const docRef = doc(db, "posts", tweetDetails.id)
-        // reference to the document
-        // i use a function from firebase called doc
-        // 3rd arguement is the id of the tweet which is from const tweetDetails
         const commentDetails = {
             username:user.username,
             name:user.name,
@@ -32,22 +27,16 @@ export default function CommentModal() {
         }
         updateDoc(docRef, {
             comments: arrayUnion(commentDetails)
-            // if i want to add an element to an array in firebase i need to use this arrayUnion function
-            // then i pass in what i want to add. commentDetails in this case.
+
         })
 
-        // navigating to the comments page after i made a comment.
-        // closing the modal AFTER getting routed to the comments page
         dispatch(closeCommentModal())
 
         router.push("/" + tweetDetails.id)
     }
     return (
-        // after importing the modal i need to create 
-        // the state and actions to open and close the Modal.
-        // in the redux store (modalSlice.js)
+
         <>
-            {/* i get the 2 props from my slices which are CommentModalOpen */}
             <Modal
                 className="flex justify-center items-center"
                 open={isOpen} onClose={() => dispatch(closeCommentModal())}>
@@ -116,7 +105,6 @@ export default function CommentModal() {
                                     disabled:opacity-50"
                                     disabled={!comment}
                                     onClick={sendComment}
-                                    // calling the async function so when click tweet button a comment gets added to firebase.
                                     >
                                         Tweet</button>
                                 </div>
